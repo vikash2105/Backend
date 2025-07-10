@@ -1,29 +1,31 @@
-// server.js
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 
-// ✅ Load env variables
 dotenv.config();
 console.log("✅ Loaded MONGO_URI:", process.env.MONGO_URI);
 
 const app = express();
 
-// ✅ CORS setup to allow frontend access
+// ✅ CORS config (allow frontend)
 app.use(cors({
-  origin: "https://frontend-svfw.onrender.com", // ✅ Your frontend URL
+  origin: "https://frontend-svfw.onrender.com",
   credentials: true
 }));
 
-// ✅ Middleware
 app.use(express.json());
 
 // ✅ Routes
 app.use("/api/auth", authRoutes);
 
-// ✅ MongoDB + Server
+// ✅ Health check route
+app.get("/", (req, res) => {
+  res.send("Backend is running!");
+});
+
+// ✅ DB and Server
 const startServer = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
