@@ -5,23 +5,25 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 
-// ✅ Load environment variables BEFORE using them
+// ✅ Load env variables
 dotenv.config();
-
-// ✅ Debug log to verify MONGO_URI is loaded
 console.log("✅ Loaded MONGO_URI:", process.env.MONGO_URI);
 
-// ✅ Initialize Express app
 const app = express();
 
+// ✅ CORS setup to allow frontend access
+app.use(cors({
+  origin: "https://frontend-svfw.onrender.com", // ✅ Your frontend URL
+  credentials: true
+}));
+
 // ✅ Middleware
-app.use(cors());
 app.use(express.json());
 
 // ✅ Routes
 app.use("/api/auth", authRoutes);
 
-// ✅ MongoDB connection
+// ✅ MongoDB + Server
 const startServer = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
@@ -38,7 +40,7 @@ const startServer = async () => {
 
   } catch (err) {
     console.error("❌ MongoDB connection failed:", err.message);
-    process.exit(1); // Stop app if DB connection fails
+    process.exit(1);
   }
 };
 
