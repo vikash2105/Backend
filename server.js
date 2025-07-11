@@ -2,29 +2,32 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import authRoutes from './routes/authRoutes.js'; // include .js
+import authRoutes from './routes/authRoutes.js';
 
 dotenv.config();
 
 const app = express();
 
-// ✅ CORS config (allow frontend)
+// ✅ CORS Configuration (Allow Render Frontend)
 app.use(cors({
-  origin: "https://frontend-svfw.onrender.com",
+  origin: "https://frontend-svfw.onrender.com", // Your frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
 
+// ✅ Middleware to parse JSON
 app.use(express.json());
 
-// ✅ Routes
+// ✅ API Routes
 app.use("/api/auth", authRoutes);
 
-// ✅ Health check
+// ✅ Health Check Route
 app.get("/", (req, res) => {
-  res.send("Backend is running!");
+  res.send("✅ Backend is running and healthy!");
 });
 
-// ✅ DB + Server
+// ✅ Database Connection + Server Startup
 const startServer = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
