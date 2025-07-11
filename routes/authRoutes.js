@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 // In-memory user store (can be replaced by DB)
 const users = [];
@@ -47,4 +48,4 @@ router.get('/profile', (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;
