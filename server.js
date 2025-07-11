@@ -1,11 +1,10 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const authRoutes = require('./routes/authController'); // or authController
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import authRoutes from './routes/authRoutes.js'; // include .js
 
 dotenv.config();
-console.log("✅ Loaded MONGO_URI:", process.env.MONGO_URI);
 
 const app = express();
 
@@ -20,12 +19,12 @@ app.use(express.json());
 // ✅ Routes
 app.use("/api/auth", authRoutes);
 
-// ✅ Health check route
+// ✅ Health check
 app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
 
-// ✅ DB and Server
+// ✅ DB + Server
 const startServer = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
